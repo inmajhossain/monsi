@@ -4,9 +4,9 @@ import { FaArrowRightArrowLeft } from "react-icons/fa6";
 
 function Header() {
   return (
-    <div className="p-10">
-      <div className="hidden z-99 relative lg:flex flex-row justify-between items-center bg-black/10 backdrop-blur-lg px-10 w-full h-20 :">
-        <Link className="flex items-center gap-1" href={"/home"}>
+    <div className="top-10 right-0 z-99 fixed mx-auto px-10 w-full">
+      <div className="hidden lg:flex flex-row justify-between items-center bg-black/40 backdrop-blur-lg px-10 w-full h-20">
+        <Link className="flex items-center gap-1" href={"/#"}>
           <Image
             src="/image/logo/monsi-logo.png"
             alt={"logo"}
@@ -19,7 +19,7 @@ function Header() {
           </h6>
         </Link>
 
-        <nav className="flex flex-row justify-evenly items-center gap-4 lg:w-220 font-sans text-[#181A2F] text-[16px] text-center">
+        <nav className="flex flex-row justify-evenly items-center gap-4 lg:w-220 font-sans text-[16px] text-white text-center">
           <Link
             className="hover:text-[#0C969C] transition-transform ease-in"
             href="/"

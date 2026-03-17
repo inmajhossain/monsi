@@ -6,10 +6,10 @@ import { motion } from "framer-motion";
 
 function Hero() {
   return (
-    <div className="relative -mt-40 w-screen h-115 lg:h-screen overflow-hidden">
+    <div className="relative w-screen h-115 lg:h-screen overflow-hidden">
       {/* Background Video */}
       <video
-        className="top-0 left-0 absolute w-full h-full object-cover"
+        className="top-0 left-0 absolute w-full h-screen object-cover"
         src="/image/hero/realestatevideo.mp4"
         autoPlay
         muted
@@ -24,7 +24,7 @@ function Hero() {
         transition={{ duration: 0.9, ease: "easeOut" }}
         className="z-10 relative flex flex-col justify-around items-center lg:items-start gap-5 lg:px-25 py-10"
       >
-        <h2 className="flex justify-center items-center mt-10 md:mt-20 lg:mt-60 px-4 w-80 md:w-120 lg:w-200 h-full font-bold text-[20px] text-white lg:text-[50px] lg:text-left text-center leading-8 lg:leading-16">
+        <h2 className="flex justify-center items-center mt-10 md:mt-20 lg:mt-60 px-4 w-80 md:w-120 lg:w-185 h-full font-bold text-[20px] text-white lg:text-[45px] lg:text-left text-center leading-8 lg:leading-16">
           Reimagining urban living through sustainable design and human -
           centered development.
         </h2>

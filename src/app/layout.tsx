@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import Header from "@/components/layout/header/Header";
+import MobileHeader from "@/components/layout/header/MobileHeader";
+import Footer from "@/components/layout/footer/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const manrope = localFont({
+  src: "../font/ManropeFont.ttf",
+  variable: "--font-manrope",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const inter = localFont({
+  src: "../font/InterFont.ttf",
+  variable: "--font-inter",
+});
+
+const lobster = localFont({
+  src: "../font/Lobster.ttf",
+  variable: "--font-lobster",
 });
 
 export const metadata: Metadata = {
@@ -20,15 +28,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${manrope.className} ${inter.variable} ${lobster.variable} antialiased`}
       >
+        <Header />
+        <MobileHeader />
         {children}
+        <Footer />
       </body>
     </html>
   );

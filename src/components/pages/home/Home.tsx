@@ -1,15 +1,13 @@
-import Header from "@/components/layout/header/Header";
 import Hero from "./Hero";
-import MobileHeader from "@/components/layout/header/MobileHeader";
-import Footer from "@/components/layout/footer/Footer";
+import ContactForm from "../contact/ContactForm";
+import ScrollStackGallery from "./ScrollStackGallery";
 
 function Home() {
   return (
     <div>
-      <MobileHeader />
-      <Header />
       <Hero />
-      <Footer />
+      <ScrollStackGallery />
+      <ContactForm />
     </div>
   );
 }
