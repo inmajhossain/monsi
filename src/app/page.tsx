@@ -1,9 +1,15 @@
-import Home from "@/components/pages/home/Home";
+import ContactForm from "@/components/pages/contact/ContactForm";
+import Hero from "@/components/pages/home/Hero";
+import Properties from "@/components/pages/home/Properties";
+import ScrollStackGallery from "@/components/pages/home/ScrollStackGallery";
 
 function page() {
   return (
     <div>
-      <Home />
+      <Hero />
+      <ScrollStackGallery />
+      <Properties />
+      <ContactForm />
     </div>
   );
 }

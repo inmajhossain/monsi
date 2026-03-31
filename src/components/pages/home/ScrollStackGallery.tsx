@@ -418,16 +418,6 @@ export default function StickyPropertyView() {
           <PropertyCard key={property.id} property={property} index={index} />
         ))}
       </div>
-
-      {/* Footer */}
-      <div className="py-20 text-white text-center">
-        <h2 className="font-bold text-3xl">Find Your Space</h2>
-        <p className="opacity-60 mt-2 text-md uppercase tracking-wide">
-          Premium Properties{" "}
-          <span className="font-extrabold text-amber-500 animate-pulse">|</span>{" "}
-          Dhaka
-        </p>
-      </div>
     </main>
   );
 }

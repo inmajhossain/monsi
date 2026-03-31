@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#032F30] w-full text-[#E3F0B6]">
+    <footer className="bg-[#032F30] border-amber-500 border-t w-full text-[#E3F0B6]">
       <div className="mx-auto px-4 md:px-8 py-10 max-w-360">
         {/* Top Section */}
         <div className="gap-10 md:gap-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:mt-10 md:ml-20 lg:ml-0">

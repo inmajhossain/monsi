@@ -9,6 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-manrope: var(--font-manrope);
+  --font-inter: var(--font-inter);
   --font-lobster: var(--font-lobster);
   --container-custom: 1224px;
 }

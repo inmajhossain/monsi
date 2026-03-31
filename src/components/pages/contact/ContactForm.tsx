@@ -25,8 +25,8 @@ export default function ContactForm() {
 
       {/* RIGHT FORM */}
       <motion.div
-        initial={{ opacity: 0, x: 120 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 120 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
         className="flex justify-center items-center bg-black/80 backdrop-blur-lg px-6 md:px-16 py-16 w-full lg:w-1/2"

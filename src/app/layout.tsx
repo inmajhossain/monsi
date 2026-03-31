@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${manrope.className} ${inter.variable} ${lobster.variable} antialiased`}
+        className={`${manrope.className} ${lobster.variable} ${inter.variable}  antialiased`}
       >
         <Header />
         <MobileHeader />
