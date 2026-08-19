@@ -1,12 +1,10 @@
 import Properties from "@/components/pages/home/Properties";
 import React from "react";
 
-const page = () => {
+export default function PropertiesPage() {
   return (
     <div>
       <Properties />
     </div>
   );
-};
-
-export default page;
+}

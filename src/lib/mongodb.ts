@@ -29,8 +29,13 @@ async function connectDB(): Promise<typeof mongoose> {
   }
 
   if (!cached.promise) {
-    const opts = {
+    const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
+      maxPoolSize: 10,
+      minPoolSize: 2,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4, // Force IPv4 to prevent 10s DNS resolution timeout on Windows/Atlas
     };
 
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {

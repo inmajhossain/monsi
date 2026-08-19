@@ -55,6 +55,8 @@ const PropertySchema: Schema = new Schema({
   collection: 'properties' // Specify your collection name here
 });
 
+PropertySchema.index({ createdAt: -1 });
+
 // Create and export the model
 const Property: Model<IProperty> = mongoose.models.Property || mongoose.model<IProperty>('Property', PropertySchema);
 

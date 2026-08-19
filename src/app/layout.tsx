@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import MobileHeader from "@/components/layout/header/MobileHeader";
 import Footer from "@/components/layout/footer/Footer";
+import { AuthProvider } from "@/context/AuthContext";
 
 const manrope = localFont({
   src: "../font/ManropeFont.ttf",
@@ -34,13 +35,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${manrope.className} ${lobster.variable} ${inter.variable}  antialiased`}
+        className={`${manrope.className} ${lobster.variable} ${inter.variable} antialiased relative`}
       >
-        <Header />
-        <MobileHeader />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <MobileHeader />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
 }
+

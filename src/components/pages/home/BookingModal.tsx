@@ -1,8 +1,9 @@
 // components/BookingModal.tsx
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import React, { useState, FormEvent } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaTimes, FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaCheckCircle, FaPaperPlane } from 'react-icons/fa';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -19,7 +20,13 @@ interface FormData {
   message: string;
 }
 
-export default function BookingModal({ isOpen, onClose, propertyId, propertyTitle, onSuccess }: BookingModalProps) {
+export default function BookingModal({
+  isOpen,
+  onClose,
+  propertyId,
+  propertyTitle,
+  onSuccess,
+}: BookingModalProps) {
   const [formData, setFormData] = useState<FormData>({
     clientName: '',
     clientEmail: '',
@@ -28,15 +35,19 @@ export default function BookingModal({ isOpen, onClose, propertyId, propertyTitl
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+    if (error) setError('');
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -60,6 +71,7 @@ export default function BookingModal({ isOpen, onClose, propertyId, propertyTitl
       const data = await res.json();
 
       if (res.ok) {
+        setSubmitted(true);
         setFormData({
           clientName: '',
           clientEmail: '',
@@ -68,104 +80,164 @@ export default function BookingModal({ isOpen, onClose, propertyId, propertyTitl
         });
         onSuccess();
         setTimeout(() => {
+          setSubmitted(false);
           onClose();
-        }, 2000);
+        }, 2200);
       } else {
-        setError(data.error || 'Something went wrong');
+        setError(data.error || 'Something went wrong. Please try again.');
       }
-    } catch (error) {
-      setError('Failed to submit booking');
+    } catch {
+      setError('Failed to submit booking inquiry.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="z-50 fixed inset-0 overflow-y-auto">
+    <div className="z-50 fixed inset-0 flex justify-center items-center p-4 overflow-y-auto">
       {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal */}
-      <div className="flex justify-center items-center p-4 min-h-full">
-        <div className="relative bg-white shadow-xl rounded-lg w-full max-w-md transition-all transform">
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            className="top-4 right-4 absolute text-gray-400 hover:text-gray-600"
-          >
-            <XMarkIcon className="w-6 h-6" />
-          </button>
+      {/* Modal Card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className="relative bg-neutral-900 shadow-2xl p-6 sm:p-8 border border-white/10 rounded-2xl w-full max-w-lg overflow-hidden"
+      >
+        {/* Decorative Top Gradient Line */}
+        <div className="top-0 right-0 left-0 absolute bg-gradient-to-r from-[#0C969C] via-[#E3F0B6] to-[#0C969C] h-1" />
 
-          {/* Modal content */}
-          <div className="p-6">
-            <h3 className="mb-2 font-bold text-gray-900 text-2xl">
-              Book This Property
-            </h3>
-            <p className="mb-6 text-gray-600">
-              {propertyTitle}
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="top-5 right-5 absolute text-gray-400 hover:text-white transition p-1"
+          aria-label="Close modal"
+        >
+          <FaTimes className="w-4 h-4" />
+        </button>
+
+        {submitted ? (
+          <div className="py-8 text-center space-y-3">
+            <div className="flex justify-center items-center bg-emerald-500/20 mx-auto rounded-full w-16 h-16 text-emerald-400 text-3xl">
+              <FaCheckCircle />
+            </div>
+            <h3 className="font-bold text-white text-2xl">Viewing Request Sent!</h3>
+            <p className="text-gray-300 text-sm max-w-sm mx-auto">
+              Thank you! Our property advisory team will reach out to you within 24 hours regarding &ldquo;{propertyTitle}&rdquo;.
             </p>
+          </div>
+        ) : (
+          <div>
+            {/* Header */}
+            <div className="mb-6">
+              <div className="flex items-center gap-1.5 font-semibold text-[#E3F0B6] text-xs uppercase tracking-widest mb-1">
+                <FaCalendarAlt className="text-amber-400" />
+                Schedule a Private Viewing
+              </div>
+              <h3 className="font-bold text-white text-2xl truncate">
+                {propertyTitle}
+              </h3>
+              <p className="mt-1 text-gray-400 text-xs">
+                Fill in your details below to schedule an on-site consultation or request exclusive details.
+              </p>
+            </div>
 
+            {/* Error message */}
             {error && (
-              <div className="bg-red-100 mb-4 p-3 rounded text-red-700">
+              <div className="bg-red-500/10 mb-4 p-3 border border-red-500/20 rounded-xl text-red-300 text-xs text-center">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="clientName" className="block mb-1 font-medium text-gray-700 text-sm">
-                  Your Name *
+                <label
+                  htmlFor="clientName"
+                  className="block mb-1 font-medium text-gray-300 text-xs uppercase tracking-wider"
+                >
+                  Full Name *
                 </label>
-                <input
-                  type="text"
-                  id="clientName"
-                  name="clientName"
-                  value={formData.clientName}
-                  onChange={handleChange}
-                  required
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                  placeholder="John Doe"
-                />
+                <div className="relative">
+                  <div className="left-0 absolute inset-y-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                    <FaUser className="w-3.5 h-3.5" />
+                  </div>
+                  <input
+                    type="text"
+                    id="clientName"
+                    name="clientName"
+                    value={formData.clientName}
+                    onChange={handleChange}
+                    required
+                    className="bg-neutral-950/80 p-3 pl-9 border border-neutral-700 focus:border-[#0C969C] rounded-xl focus:ring-2 focus:ring-[#0C969C]/30 outline-none w-full text-white placeholder-gray-500 text-sm transition"
+                    placeholder="e.g. Inmaj Hossain"
+                  />
+                </div>
+              </div>
+
+              <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="clientEmail"
+                    className="block mb-1 font-medium text-gray-300 text-xs uppercase tracking-wider"
+                  >
+                    Email Address *
+                  </label>
+                  <div className="relative">
+                    <div className="left-0 absolute inset-y-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                      <FaEnvelope className="w-3.5 h-3.5" />
+                    </div>
+                    <input
+                      type="email"
+                      id="clientEmail"
+                      name="clientEmail"
+                      value={formData.clientEmail}
+                      onChange={handleChange}
+                      required
+                      className="bg-neutral-950/80 p-3 pl-9 border border-neutral-700 focus:border-[#0C969C] rounded-xl focus:ring-2 focus:ring-[#0C969C]/30 outline-none w-full text-white placeholder-gray-500 text-sm transition"
+                      placeholder="name@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="clientPhone"
+                    className="block mb-1 font-medium text-gray-300 text-xs uppercase tracking-wider"
+                  >
+                    Phone Number *
+                  </label>
+                  <div className="relative">
+                    <div className="left-0 absolute inset-y-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                      <FaPhone className="w-3.5 h-3.5" />
+                    </div>
+                    <input
+                      type="tel"
+                      id="clientPhone"
+                      name="clientPhone"
+                      value={formData.clientPhone}
+                      onChange={handleChange}
+                      required
+                      className="bg-neutral-950/80 p-3 pl-9 border border-neutral-700 focus:border-[#0C969C] rounded-xl focus:ring-2 focus:ring-[#0C969C]/30 outline-none w-full text-white placeholder-gray-500 text-sm transition"
+                      placeholder="+880 1515..."
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>
-                <label htmlFor="clientEmail" className="block mb-1 font-medium text-gray-700 text-sm">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="clientEmail"
-                  name="clientEmail"
-                  value={formData.clientEmail}
-                  onChange={handleChange}
-                  required
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="clientPhone" className="block mb-1 font-medium text-gray-700 text-sm">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  id="clientPhone"
-                  name="clientPhone"
-                  value={formData.clientPhone}
-                  onChange={handleChange}
-                  required
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                  placeholder="+1 234 567 8900"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block mb-1 font-medium text-gray-700 text-sm">
-                  Message *
+                <label
+                  htmlFor="message"
+                  className="block mb-1 font-medium text-gray-300 text-xs uppercase tracking-wider"
+                >
+                  Your Message or Preferred Time *
                 </label>
                 <textarea
                   id="message"
@@ -173,25 +245,32 @@ export default function BookingModal({ isOpen, onClose, propertyId, propertyTitl
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows={4}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                  placeholder="I'm interested in this property. Please contact me for more details..."
+                  rows={3}
+                  className="bg-neutral-950/80 p-3 border border-neutral-700 focus:border-[#0C969C] rounded-xl focus:ring-2 focus:ring-[#0C969C]/30 outline-none w-full text-white placeholder-gray-500 text-sm transition"
+                  placeholder="I would like to schedule a viewing this Saturday or receive floor plans..."
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                  loading ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+                className="flex justify-center items-center gap-2 bg-[#0C969C] hover:bg-[#0aa3aa] disabled:opacity-50 shadow-lg shadow-[#0C969C]/20 mt-6 py-3.5 rounded-xl w-full font-bold text-white text-sm transition duration-200 disabled:cursor-not-allowed"
               >
-                {loading ? 'Submitting...' : 'Submit Booking Request'}
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="border-2 border-white/30 border-t-white rounded-full w-4 h-4 animate-spin" />
+                    Submitting Inquiry...
+                  </div>
+                ) : (
+                  <>
+                    <FaPaperPlane className="w-3.5 h-3.5" /> Submit Booking Request
+                  </>
+                )}
               </button>
             </form>
           </div>
-        </div>
-      </div>
+        )}
+      </motion.div>
     </div>
   );
 }

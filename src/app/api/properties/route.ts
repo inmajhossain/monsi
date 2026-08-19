@@ -6,7 +6,7 @@ export async function GET() {
   try {
     await connectDB();
     
-    const properties: IProperty[] = await Property.find({}).sort({ createdAt: -1 });
+    const properties = await Property.find({}).sort({ createdAt: -1 }).lean();
     
     return NextResponse.json(
       { success: true, data: properties },
