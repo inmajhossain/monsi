@@ -27,10 +27,10 @@ function base64urlDecode(input: string): string {
   return Buffer.from(base64, 'base64').toString('utf8');
 }
 
-// Generate token with 7-day expiration
-export function signToken(payload: Omit<AuthPayload, 'exp'>, expiresInDays = 7): string {
+// Generate token with 3-hour expiration (10800 seconds)
+export function signToken(payload: Omit<AuthPayload, 'exp'>, expiresInSeconds = 3 * 60 * 60): string {
   const header = { alg: 'HS256', typ: 'JWT' };
-  const exp = Math.floor(Date.now() / 1000) + expiresInDays * 24 * 60 * 60;
+  const exp = Math.floor(Date.now() / 1000) + expiresInSeconds;
   const fullPayload: AuthPayload = { ...payload, exp };
 
   const encodedHeader = base64url(JSON.stringify(header));

@@ -87,8 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (newToken: string, newUser: AuthUser) => {
     localStorage.setItem('auth-token', newToken);
     localStorage.setItem('auth-user', JSON.stringify(newUser));
-    // Set cookie for 7 days
-    document.cookie = `auth-token=${newToken}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+    // Set cookie for 3 hours
+    document.cookie = `auth-token=${newToken}; path=/; max-age=${3 * 60 * 60}; SameSite=Lax`;
     setToken(newToken);
     setUser(newUser);
   };
